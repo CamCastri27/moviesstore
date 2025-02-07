@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Movie, Review
+from .models import Order, Item
 # Register your models here.
 
 class MovieAdmin(admin.ModelAdmin):
@@ -7,3 +8,5 @@ class MovieAdmin(admin.ModelAdmin):
     search_fields = ['name']
 admin.site.register(Movie, MovieAdmin)
 admin.site.register(Review)
+admin.site.register(Order)
+admin.site.register(Item)
