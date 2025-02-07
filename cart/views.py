@@ -29,5 +29,3 @@ def add_to_cart(request, id):
 def clear(request):
     request.session['cart'] = {}
     return redirect('cart.index')
-
-
