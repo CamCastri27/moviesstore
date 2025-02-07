@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from movies.models import Movie, Review
+from movies.models import Movie
 
 # Create your models here.
 class Order(models.Model):
