@@ -1,9 +1,31 @@
-from django.shortcuts import render
 from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
 from .forms import CustomUserCreationForm, CustomErrorList
-from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from django.contrib import messages
+from django.core.mail import send_mail
+
+
+def forgot_password(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        try:
+            user = User.objects.get(email=email)
+            # Send a password reset email (Django's built-in password reset can be used)
+            send_mail(
+                "Password Reset Request",
+                "Click the link below to reset your password.",
+                "noreply@yourdomain.com",
+                [email],
+            )
+            messages.success(request, "Password reset link has been sent if the email exists.")
+            return redirect("login")
+        except User.DoesNotExist:
+            messages.error(request, "No user found with this email.")
+
+    return render(request, "accounts/forgot_password.html")
+
 
 @login_required
 def orders(request):
