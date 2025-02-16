@@ -13,15 +13,22 @@
       <div class="col-md-8">
         <div class="card shadow p-3 mb-4 rounded">
           <div class="card-body">
-            <h2>Sign Up</h2>
-            <hr />
-            <form method="POST">
-              {% csrf_token %}
-              {{ template_data.form.as_p }}
-              <button type="submit"
-                class="btn bg-dark text-white">Sign Up
-              </button>
-            </form>
+ <h1>{{ template_data.title }}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {% for field in template_data.form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}  <!-- This will render the email field and other fields -->
+            {% for error in field.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Sign Up</button>
+</form>
+
           </div>
         </div>
       </div>
