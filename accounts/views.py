@@ -5,28 +5,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.mail import send_mail
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
 
-
-def forgot_password(request):
-    if request.method == "POST":
-        email = request.POST.get("email")
-        try:
-            user = User.objects.get(email=email)
-            # Send a password reset email (Django's built-in password reset can be used)
-            send_mail(
-                "Password Reset Request",
-                "Click the link below to reset your password.",
-                "noreply@yourdomain.com",
-                [email],
-            )
-            messages.success(request, "Password reset link has been sent if the email exists.")
-            return redirect("login")
-        except User.DoesNotExist:
-            messages.error(request, "No user found with this email.")
-
-    return render(request, "accounts/forgot_password.html")
-
-
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
 @login_required
 def orders(request):
     template_data = {}
@@ -58,19 +42,19 @@ def login(request):
             auth_login(request, user)
             return redirect('home.index')
 def signup(request):
-    template_data = {}
-    template_data['title'] = 'Sign Up'
-    if request.method == 'GET':
-        template_data['form'] = CustomUserCreationForm()
-        return render(request, 'accounts/signup.html',
-            {'template_data': template_data})
-    elif request.method == 'POST':
-        form = CustomUserCreationForm(request.POST, error_class=CustomErrorList)
-        if form.is_valid():
-            form.save()
-            return redirect('accounts.login')
-        else:
-            template_data['form'] = form
+        template_data = {}
+        template_data['title'] = 'Sign Up'
+        if request.method == 'GET':
+            template_data['form'] = CustomUserCreationForm()
             return render(request, 'accounts/signup.html',
                           {'template_data': template_data})
+        elif request.method == 'POST':
+            form = CustomUserCreationForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('home.index')
+            else:
+                template_data['form'] = form
+                return render(request, 'accounts/signup.html',
+                              {'template_data': template_data})
 # Create your views here.
