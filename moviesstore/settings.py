@@ -24,8 +24,18 @@ SECRET_KEY = 'django-insecure-a&47$t@3c5w*r+rmj=3ohu#ywu8c2r(3cc7uk_u4pk=-$gcbq7
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+LOGIN_REDIRECT_URL = 'login'
+LOGOUT_REDIRECT_URL = 'login'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-ALLOWED_HOSTS = []
+# Gmail SMTP server settings
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587  # TLS port (use 465 for SSL if necessary)
+EMAIL_USE_TLS = True  # Use TLS (recommended)
+EMAIL_USE_SSL = False  # Set this to False since we're using TLS, not SSL
+EMAIL_HOST_USER = 'valeriaitsko@gmail.com'  # Replace with your Gmail address
+EMAIL_HOST_PASSWORD = 'cxln drii uxjn qrem'  # Replace with your Gmail password (or App Password)
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # Default sender address
 
 
 # Application definition
